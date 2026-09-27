@@ -22,6 +22,10 @@ async def healthCheck():
 
 @app.get('/scores/{appId}')
 async def score(appId: int):
+    if appId not in data.index:
+        errMsg = str(appId)
+        errMsg += ' is not a valid Application Reference.'
+        raise HTTPException(status_code=404, detail=errMsg)
     response = {
         'threshold': threshold,
         'score': model.predict_proba(data.loc[[appId]])[0][1].item()
@@ -30,6 +34,10 @@ async def score(appId: int):
 
 @app.get('/explanations/{appId}')
 async def shapExplanation(appId: int):
+    if appId not in data.index:
+        errMsg = str(appId)
+        errMsg += ' is not a valid Application Reference.'
+        raise HTTPException(status_code=404, detail=errMsg)
     idx = data.index.get_loc(appId)
     sv = shapValues[idx]
     return {
@@ -42,4 +50,3 @@ async def shapExplanation(appId: int):
 if __name__ == "__main__":
     print('Starting server')
     uvicorn.run(app, host='0.0.0.0', port=8000)
-    
