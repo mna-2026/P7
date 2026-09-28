@@ -155,7 +155,7 @@ def renderHomePage():
         4. Click on the button **Calculate Score** and check the score in tab
         **Score**. You can additionaly view the explanation of the score in
         tab **Score Interpretation**''')
-    st.write(state)
+    # st.write(state)
 
 
 def renderSettingsPage():
