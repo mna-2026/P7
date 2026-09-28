@@ -1,5 +1,7 @@
 import pickle
 import numpy as np
+from zipfile import ZipFile
+import shap
 from fastapi import FastAPI, HTTPException
 import uvicorn
 
@@ -11,13 +13,18 @@ with open(r'../data/model_step7.pkl', 'rb') as f:
 with open(r'../data/model_threshold_step7.pkl', 'rb') as f:
     threshold = pickle.load(f)
 # Load the dataset: it is the database of the applications
-with open(r'../data/dataset_test.pkl', 'rb') as f:
-    data = pickle.load(f)
-with open(r'../data/human_friendly_dataset_test.pkl', 'rb') as f:
-    humanFriendlyData = pickle.load(f)
-# Load shap values
-with open(r'../data/shap_values_test.pkl', 'rb') as f:
-    shapValues = pickle.load(f)
+with ZipFile(r'../data/dataset_test.pkl.zip') as z:
+    with z.open(r'dataset_test.pkl') as f:
+        data = pickle.load(f)
+with ZipFile(r'../data/human_friendly_dataset_test.pkl.zip') as z:
+    with z.open(r'human_friendly_dataset_test.pkl') as f:
+        humanFriendlyData = pickle.load(f)
+# Initialize the SHAP explainer
+explainer = shap.TreeExplainer(model,
+                               feature_perturbation='tree_path_dependent')
+# Compute the SHAP values                             
+shapValues = explainer(data)
+
 
 @app.get('/health-check')
 async def healthCheck():
@@ -121,4 +128,3 @@ async def shapExplanation(appId: int):
 if __name__ == "__main__":
     print('Starting server')
     uvicorn.run(app, host='0.0.0.0', port=8000)
-    
