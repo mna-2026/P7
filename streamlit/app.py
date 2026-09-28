@@ -161,7 +161,7 @@ def renderHomePage():
 def renderSettingsPage():
     apiUrl = st.text_input(
         label='Please, input the API URL of the scoring model',
-        key='k_apiUrl',
+        key='apiUrl',
         type='url',
         persist_state='session'
     )
@@ -248,7 +248,7 @@ def renderScorePage():
         ):
             st.text_input(
                 label='Please, input the Application Reference',
-                key='k_appId',
+                key='appId',
                 type='default',
                 persist_state='session',
                 validate=(r'^\d{6}$', 'Application References are 6-digit numbers'),
