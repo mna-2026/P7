@@ -25,5 +25,5 @@ jobs:
                 pytest
             - name: Build image
               run: |
-                docker build -t scoring-model-api
+                docker build -t scoring-model-api .
                 ls
