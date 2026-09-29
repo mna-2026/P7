@@ -30,8 +30,8 @@ jobs:
                 host: ${{ secrets.EC2_HOST }}
                 username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
-                source: scoring-model-api.tar
-                target: ~
+                source: "./scoring-model-api.tar"
+                target: "/home/ubuntu"
             - name: Configure and run image on EC2
               uses: appleboy/ssh-action@v1.2.5
               with:
