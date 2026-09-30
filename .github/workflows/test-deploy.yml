@@ -31,4 +31,6 @@ jobs:
                 script: |
                     ls
                     sudo apt update && sudo apt install -y docker.io
+                    sudo usermod -aG docker ubuntu
+                    sudo systemctl restart docker
                     docker load -i scoring-model-api.tar
