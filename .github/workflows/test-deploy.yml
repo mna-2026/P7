@@ -29,12 +29,10 @@ jobs:
                 key: ${{ secrets.EC2_SSH_KEY }}
                 command_timeout: 15m
                 script: |
-                    ls
                     sudo apt update && sudo apt install -y docker.io
                     echo "whoami"
                     whoami
-                    echo "sudo usermod -aG docker ubuntu"
-                    sudo usermod -aG docker ubuntu
-                    echo "sudo systemctl restart docker"
-                    sudo systemctl restart docker
-                    docker load -i scoring-model-api.tar
+                    echo "sudo docker load -i scoring-model-api.tar"
+                    sudo docker load -i scoring-model-api.tar
+                    echo "docker run -d -p 8084:8084 --name scoring-model-container scoring-model-api"
+                    docker run -d -p 8084:8084 --name scoring-model-container scoring-model-api
