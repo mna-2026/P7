@@ -34,3 +34,5 @@ jobs:
                     sudo docker load -i scoring-model-api.tar
                     echo "sudo docker run -d -p 8084:8084 --name mycontainer scoring-model-api"
                     sudo docker run -d -p 8084:8084 --name mycontainer scoring-model-api
+                    sleep 10
+                    sudo docker ps -a
