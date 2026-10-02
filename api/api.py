@@ -24,11 +24,13 @@ explainer = shap.TreeExplainer(model,
                                feature_perturbation='tree_path_dependent')
 # Compute the SHAP values                             
 shapValues = explainer(data)
+print('API loaded')
 
 
 @app.get('/health-check')
 async def healthCheck():
     return 'The API is up and running'
+
 
 @app.get('/customer-info/{appId}')
 async def customerInfo(appId: int):
@@ -98,6 +100,7 @@ async def customerInfo(appId: int):
     }
     return response
 
+
 @app.get('/scores/{appId}')
 async def score(appId: int):
     if appId not in data.index:
@@ -109,6 +112,7 @@ async def score(appId: int):
         'score': model.predict_proba(data.loc[[appId]])[0][1].item()
     }
     return response
+
 
 @app.get('/explanations/{appId}')
 async def shapExplanation(appId: int):
@@ -124,6 +128,7 @@ async def shapExplanation(appId: int):
         'data': sv.data.tolist(),
         'feature_names': sv.feature_names
     }
+
 
 if __name__ == "__main__":
     print('Starting server')
