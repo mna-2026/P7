@@ -7,24 +7,28 @@ import uvicorn
 
 app = FastAPI()
 # Load selected model
+print('Loading model')
 with open(r'../data/model_step7.pkl', 'rb') as f:
     model = pickle.load(f)
-# Load the computed threshold
 with open(r'../data/model_threshold_step7.pkl', 'rb') as f:
     threshold = pickle.load(f)
+print('Model loaded')
 # Load the dataset: it is the database of the applications
+print('Loading datasets')
 with ZipFile(r'../data/dataset_test.pkl.zip') as z:
     with z.open(r'dataset_test.pkl') as f:
         data = pickle.load(f)
 with ZipFile(r'../data/human_friendly_dataset_test.pkl.zip') as z:
     with z.open(r'human_friendly_dataset_test.pkl') as f:
         humanFriendlyData = pickle.load(f)
+print('Datasets loaded')
 # Initialize the SHAP explainer
+print('Initialize explanation')
 explainer = shap.TreeExplainer(model,
                                feature_perturbation='tree_path_dependent')
-# Compute the SHAP values                             
 shapValues = explainer(data)
-print('API loaded')
+print('Explaination initialized')
+print('API ready')
 
 
 @app.get('/health-check')
