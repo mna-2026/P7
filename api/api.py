@@ -22,7 +22,7 @@ with ZipFile(r'../data/human_friendly_dataset_test.pkl.zip') as z:
     with z.open(r'human_friendly_dataset_test.pkl') as f:
         humanFriendlyData = pickle.load(f)
 print('Datasets loaded')
-# Initialize the SHAP explainer
+# Initialize the SHAP explainer & comput the SHAP values
 print('Initialize explanation')
 explainer = shap.TreeExplainer(model,
                                feature_perturbation='tree_path_dependent')
