@@ -32,14 +32,16 @@ jobs:
                 key: ${{ secrets.EC2_SSH_KEY }}
                 source: "./scoring-model-api.tar"
                 target: "/home/ubuntu"
-            - name: Configure and run image on EC2
+            - name: Configure EC2 and run image
               uses: appleboy/ssh-action@v1.2.5
               with:
                 host: ${{ secrets.EC2_HOST }}
                 username: ubuntu
                 key: ${{ secrets.EC2_SSH_KEY }}
+                command_timeout: 15m
                 script: |
-                    sudo apt update && sudo apt upgrade -y && sudo apt install -y docker.io
-                    cd ~
-                    docker load -i scoring-model-api.tar
-                    docker run -d -p 8084:8084 --name scoring-model-container scoring-model-api
+                    sudo apt update && sudo apt install -y docker.io
+                    echo "sudo docker load -i scoring-model-api.tar"
+                    sudo docker load -i scoring-model-api.tar
+                    echo "sudo docker run -d -p 8084:8084 --name scoring-model-container scoring-model-api"
+                    sudo docker run -d -p 8084:8084 --name scoring-model-container scoring-model-api
